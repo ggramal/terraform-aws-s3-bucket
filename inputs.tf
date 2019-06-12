@@ -5,7 +5,6 @@ variable "s3_bucket" {
     versioning_enabled = string
     kms_key_arn        = string
     tags               = map(string)
-    prevent_destroy    = bool
   })
 }
 
