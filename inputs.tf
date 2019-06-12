@@ -1,49 +1,38 @@
-variable "s3_bucket_name" {
-  type = "string"
-}
-
-variable "s3_bucket_acl" {
-  type = "string"
-}
-
-variable "versioning_enabled" {
-  type = "string"
-}
-
-variable "kms_key_arn" {
-  type    = "string"
-  default = ""
-}
-
-variable "tags_name" {
-  type = "string"
-}
-
-variable "tags_env" {
-  type = "string"
-}
-
-variable "s3_base_dir" {
-  type    = "string"
-  default = ""
+variable "s3_bucket" {
+  type = object({
+    name               = string
+    bucket_acl         = string
+    versioning_enabled = string
+    kms_key_arn        = string
+    tags               = map(string)
+    prevent_destroy    = bool
+  })
 }
 
 variable "static_files" {
-  type    = "list"
-  default = []
-}
-
-variable "static_files_base_dir" {
-  type    = "string"
-  default = ""
+  type = object({
+    local_base_dir = string
+    files          = list(string)
+  })
+  default = null
 }
 
 variable "dynamic_files" {
-  type    = "list"
-  default = []
+  type = object({
+    local_base_dir = string
+    files          = list(string)
+  })
+  default = null
 }
 
-variable "dynamic_files_base_dir" {
+variable "content_files" {
+  type = object({
+    file_names-content = map(string)
+  })
+  default = null
+}
+
+variable "s3_base_dir" {
   type    = "string"
   default = ""
 }
@@ -53,7 +42,3 @@ variable "folders" {
   default = []
 }
 
-variable "s3_file_content_dict" {
-  type    = "map"
-  default = {}
-}
