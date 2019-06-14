@@ -7,6 +7,16 @@ resource "aws_s3_bucket" "s3-bucket" {
     enabled = var.s3_bucket.versioning_enabled
   }
 
+  server_side_encryption_configuration {
+    rule {
+      apply_server_side_encryption_by_default {
+        kms_master_key_id = var.s3_bucket.kms_key_arn
+        sse_algorithm     = "aws:kms"
+      }
+    }
+  }
+
+
   tags = var.s3_bucket.tags
 }
 
@@ -35,7 +45,7 @@ locals {
   s3_files      = var.content_files != null ? keys(var.content_files.file_names-content) : []
   s3_content    = var.content_files != null ? values(var.content_files.file_names-content) : []
   s3_bucket     = var.s3_bucket.kms_key_arn == "" ? aws_s3_bucket.s3-bucket[0].bucket : aws_s3_bucket.s3-bucket-encrypted[0].bucket
-  s3_bucket_arn = var.s3_bucket.kms_key_arn == "" ? aws_s3_bucket.s3-bucket[0].bucket : aws_s3_bucket.s3-bucket-encrypted[0].bucket
+  s3_bucket_arn = var.s3_bucket.kms_key_arn == "" ? aws_s3_bucket.s3-bucket[0].arn : aws_s3_bucket.s3-bucket-encrypted[0].arn
 }
 
 resource "aws_s3_bucket_object" "s3-bucket-folder-objects" {
