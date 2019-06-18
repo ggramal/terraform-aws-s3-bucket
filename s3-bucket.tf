@@ -6,6 +6,8 @@ resource "aws_s3_bucket" "s3-bucket" {
   versioning {
     enabled = var.s3_bucket.versioning_enabled
   }
+  
+  force_destroy = true
 
   tags = var.s3_bucket.tags
 }
@@ -27,6 +29,9 @@ resource "aws_s3_bucket" "s3-bucket-encrypted" {
       }
     }
   }
+
+
+  force_destroy = true
 
   tags = var.s3_bucket.tags
 }
